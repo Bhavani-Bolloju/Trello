@@ -11,7 +11,16 @@ const taskSlice = createSlice({
   initialState,
   reducers: {
     newTodo: (state, action) => {
-      state.newTodos.push(action.payload);
+      const todos = [...state.newTodos];
+      const id = action.payload.id;
+      const findId = todos.findIndex((todo) => todo.id === id);
+      if (findId < 0) {
+        //when no todo found push to the todo list
+        state.newTodos.push(action.payload);
+      } else {
+        //when todo already exists replace it with updated one
+        state.newTodos[findId] = action.payload;
+      }
     },
     currentTodo: (state, action) => {
       console.log(action.payload);

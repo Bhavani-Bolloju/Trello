@@ -7,6 +7,7 @@ function TaskWrapper(props) {
     <div className={classes.task}>
       <div>{props.children}</div>
       {!props.add && (
+        // btn that triggers to open text input to add new item
         <button onClick={props.onClick}>
           <span>+</span>
           <span>Add a Card</span>

@@ -21,7 +21,9 @@ function NewTodos() {
 
   const addNewTaskHandler = function () {
     setTask((prev) => !prev);
-    if (task) {
+
+    //when user clicks save btn that's in taskwrapper component to save the added todo
+    if (task && text.trim().length !== 0) {
       dispatch(
         newTodo({
           todo: text,
@@ -37,10 +39,15 @@ function NewTodos() {
       <h2>To Do</h2>
       <ul className="todoList">
         {newTodos.map((task) => (
+          //each task item in the todo list
           <Card key={task.id} id={task.id} todo={task.todo} />
         ))}
       </ul>
-      {task && <InputTextArea onSetText={setText} text={text} />}
+
+      {task && (
+        //text input to add new task to the todo list
+        <InputTextArea onSetText={setText} text={text} />
+      )}
     </TaskWrapper>
   );
 }
