@@ -1,0 +1,36 @@
+.task {
+  background-color: #eef0f3;
+  padding: 10px 20px;
+  box-shadow: 0px 2px 10px 5px rgb(0, 0, 0, 0.06);
+  flex-basis: 22%;
+  border-radius: 3px;
+
+  h2 {
+    font-weight: 700;
+    font-size: 16px;
+    color: #57647a;
+    margin-bottom: 20px;
+  }
+
+  button {
+    border: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 20px;
+
+    span {
+      &:first-child {
+        font-size: 20px;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
