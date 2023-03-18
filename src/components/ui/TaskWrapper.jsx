@@ -1,4 +1,5 @@
 import React from "react";
+import { SaveButton } from "./Components";
 import classes from "./TaskWrapper.module.scss";
 
 function TaskWrapper(props) {
@@ -12,11 +13,7 @@ function TaskWrapper(props) {
         </button>
       )}
 
-      {props.add && (
-        <button onClick={props.onClick} className={classes.save}>
-          Save
-        </button>
-      )}
+      {props.add && <SaveButton onClick={props.onClick} />}
     </div>
   );
 }

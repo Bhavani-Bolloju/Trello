@@ -1,7 +1,64 @@
 .card {
-  background-color: #fff;
   width: 100%;
-  border-radius: 5px;
-  box-shadow: 0px 2px 5px 10px rgba(0, 0, 0, 0.01);
-  padding: 8px;
+
+  color: #5e6c84;
+
+  .task {
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: fit-content;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px 10px rgba(0, 0, 0, 0.01);
+    padding: 10px 8px;
+    text-transform: capitalize;
+  }
+
+  .todo {
+    width: 100%;
+    &:hover {
+      cursor: pointer;
+    }
+    &:hover + .edit-btn {
+      visibility: visible;
+    }
+  }
+
+  .edit-btn {
+    visibility: hidden;
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+
+    outline: none;
+    &:hover {
+      cursor: pointer;
+      visibility: visible;
+    }
+  }
+  svg {
+    font-size: 20px;
+    color: #9fa9ba;
+  }
+
+  .edit_todo {
+    display: flex;
+    flex-direction: column;
+
+    textarea {
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px 10px rgba(0, 0, 0, 0.01);
+      padding: 8px;
+      height: 70px;
+      align-self: flex-start;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 }
