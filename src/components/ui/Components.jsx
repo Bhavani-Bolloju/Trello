@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import classes from "./Components.module.scss";
 
-export const InputTextArea = function ({ onSetText, text }) {
+export const InputTextArea = function ({ value, onAddText }) {
+  // const inputRef = useRef();
+
   return (
     <textarea
+      // ref={inputRef}
       className={classes["input_text"]}
       type="text"
-      value={text}
-      onChange={(e) => onSetText(e.target.value)}
+      value={value}
+      onChange={(e) => onAddText(e.target.value)}
     />
   );
 };

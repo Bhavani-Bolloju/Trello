@@ -3,48 +3,44 @@ import classes from "./Card.module.scss";
 import { AiOutlineEdit } from "react-icons/ai";
 import { InputTextArea } from "../ui/Components";
 import { SaveButton } from "../ui/Components";
-import { useDispatch } from "react-redux";
-import { newTodo } from "../store/TodoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { editTodo, newTodo } from "../store/TodoSlice";
 
-function Card({ todo, id }) {
-  const [editting, setEditting] = useState(false);
+function Card({ todo, id, onEdit, edit }) {
   const [editedText, setEditedText] = useState(todo);
 
   const dispatch = useDispatch();
 
-  const editHandler = function () {
-    setEditting(true);
+  const editCardHandler = function () {
+    if (editedText.trim().length !== 0) {
+      dispatch(
+        newTodo({
+          id,
+          todo: editedText,
+        })
+      );
+    }
   };
 
   return (
     <li className={classes.card}>
-      {!editting && (
-        //state when task is added and when task is not in editable state
+      {!edit && (
         <div className={classes.task}>
           <div className={classes["todo"]}>{todo}</div>
-          <button className={classes["edit-btn"]} onClick={editHandler}>
+          <button
+            className={classes["edit-btn"]}
+            onClick={() => {
+              onEdit(id);
+            }}
+          >
             <AiOutlineEdit />
           </button>
         </div>
       )}
-      {editting && (
-        //when task is in editable state
+      {edit && (
         <div className={classes["edit_todo"]}>
-          <InputTextArea onSetText={setEditedText} text={editedText} />
-
-          <SaveButton
-            onClick={() => {
-              setEditting(false);
-              //here dispatch the edited todo
-
-              dispatch(
-                newTodo({
-                  id,
-                  todo: editedText,
-                })
-              );
-            }}
-          />
+          <InputTextArea value={editedText} onAddText={setEditedText} />
+          <SaveButton onClick={editCardHandler} />
         </div>
       )}
     </li>

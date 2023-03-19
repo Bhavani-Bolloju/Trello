@@ -6,11 +6,11 @@ function CompletedTasks() {
     console.log("completed task");
   };
 
-  return (
-    <TaskWrapper onClick={addCompletedTaskHandler}>
-      <h2>Done</h2>
-    </TaskWrapper>
-  );
+  // return (
+  //   <TaskWrapper>
+  //     <h2>Done</h2>
+  //   </TaskWrapper>
+  // );
 }
 
 export default CompletedTasks;
