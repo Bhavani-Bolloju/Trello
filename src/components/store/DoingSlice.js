@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  newTodos: [],
-  addCard: false,
-  editCard: false,
+  currentTodos: [],
+  addCTCard: false,
+  editCTCard: false,
 };
 
 const updateTodos = function (items, action) {
@@ -24,27 +24,28 @@ const updateTodos = function (items, action) {
   }
 };
 
-const taskSlice = createSlice({
-  name: "todos",
+const doingSlice = createSlice({
+  name: "doingTodos",
   initialState,
   reducers: {
-    newTodo: (state, action) => {
-      updateTodos(state.newTodos, action);
+    newDoingTodo: (state, action) => {
+      updateTodos(state.currentTodos, action);
     },
 
-    addCardHandler: (state) => {
-      state.addCard = !state.addCard;
+    addDoingTodo: (state) => {
+      state.addCTCard = !state.addCTCard;
     },
 
-    editTodo: (state, action) => {
-      const items = [...state.newTodos];
+    editDoingTodo: (state, action) => {
+      const items = [...state.currentTodos];
       const findTodo = items.findIndex((item) => item.id === action.payload);
       const todo = items[findTodo];
       const updatedTodo = { ...todo, edit: !todo.edit };
-      state.newTodos[findTodo] = updatedTodo;
+      state.currentTodos[findTodo] = updatedTodo;
     },
   },
 });
 
-export const { newTodo, addCardHandler, editTodo } = taskSlice.actions;
-export default taskSlice.reducer;
+export const { newDoingTodo, addDoingTodo, editDoingTodo } = doingSlice.actions;
+
+export default doingSlice.reducer;

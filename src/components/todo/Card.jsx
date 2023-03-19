@@ -3,10 +3,9 @@ import classes from "./Card.module.scss";
 import { AiOutlineEdit } from "react-icons/ai";
 import { InputTextArea } from "../ui/Components";
 import { SaveButton } from "../ui/Components";
-import { useDispatch, useSelector } from "react-redux";
-import { editTodo, newTodo } from "../store/TodoSlice";
+import { useDispatch } from "react-redux";
 
-function Card({ todo, id, onEdit, edit }) {
+function Card({ todo, id, onEdit, edit, dispatchTodo }) {
   const [editedText, setEditedText] = useState(todo);
 
   const dispatch = useDispatch();
@@ -14,7 +13,7 @@ function Card({ todo, id, onEdit, edit }) {
   const editCardHandler = function () {
     if (editedText.trim().length !== 0) {
       dispatch(
-        newTodo({
+        dispatchTodo({
           id,
           todo: editedText,
         })

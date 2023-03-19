@@ -31,7 +31,11 @@ function NewTodos() {
   };
 
   return (
-    <TaskWrapper taskText={text} onAdd={addNewTaskHandler}>
+    <TaskWrapper
+      onAdd={addNewTaskHandler}
+      addCard={addCard}
+      onAddTodo={addCardHandler}
+    >
       <h2>To Do</h2>
       <ul className="todoList">
         {newTodos.map((task) => (
@@ -43,6 +47,7 @@ function NewTodos() {
             text={text}
             onEdit={editCard}
             edit={task.edit}
+            dispatchTodo={newTodo}
           />
         ))}
       </ul>
