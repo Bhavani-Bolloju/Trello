@@ -6,7 +6,7 @@ const initialState = {
   editCard: false,
 };
 
-const updateTodos = function (items, action) {
+export const updateTodos = function (items, action) {
   const todos = [...items];
   const id = action.payload.id;
   const findId = todos.findIndex((todo) => todo.id === id);

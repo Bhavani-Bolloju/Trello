@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import TaskWrapper from "../ui/TaskWrapper";
 import { nanoid } from "nanoid";
-import { InputTextArea } from "../ui/Components";
 import { newDoingTodo, addDoingTodo, editDoingTodo } from "../store/DoingSlice";
-
-import Card from "../todo/Card";
+import Tasks from "../ui/Tasks";
 
 function CurrentTasks() {
   const dispatch = useDispatch();
@@ -34,27 +31,17 @@ function CurrentTasks() {
   };
 
   return (
-    <TaskWrapper
-      onAdd={addNewDoingTodoHandler}
+    <Tasks
+      onAddHandler={addNewDoingTodoHandler}
       addCard={addCTCard}
       onAddTodo={addDoingTodo}
-    >
-      <h2>Doing</h2>
-      <ul className="todoList">
-        {currentTodos.map((task) => (
-          <Card
-            key={task.id}
-            id={task.id}
-            todo={task.todo}
-            text={text}
-            onEdit={editTodoCard}
-            edit={task.edit}
-            dispatchTodo={newDoingTodo}
-          />
-        ))}
-      </ul>
-      {addCTCard && <InputTextArea value={text} onAddText={setText} />}
-    </TaskWrapper>
+      todos={currentTodos}
+      value={text}
+      onSetText={setText}
+      onEdit={editTodoCard}
+      dispatchTodo={newDoingTodo}
+      HeaderTitle="Doing"
+    />
   );
 }
 

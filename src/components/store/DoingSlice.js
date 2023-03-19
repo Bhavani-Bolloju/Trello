@@ -1,27 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { updateTodos } from "./TodoSlice";
 
 const initialState = {
   currentTodos: [],
   addCTCard: false,
   editCTCard: false,
-};
-
-const updateTodos = function (items, action) {
-  const todos = [...items];
-  const id = action.payload.id;
-  const findId = todos.findIndex((todo) => todo.id === id);
-  if (findId < 0) {
-    items.push(action.payload);
-  } else {
-    //when todo already exists replace it with updated one
-    const EditedItem = todos[findId];
-    const updateItem = {
-      ...EditedItem,
-      todo: action.payload.todo,
-      edit: !EditedItem.edit,
-    };
-    items[findId] = updateItem;
-  }
 };
 
 const doingSlice = createSlice({
