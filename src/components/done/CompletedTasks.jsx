@@ -1,16 +1,50 @@
-import React from "react";
-import TaskWrapper from "../ui/TaskWrapper";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { nanoid } from "nanoid";
+import { newDoneTodo, addDoneTodo, editDoneTodo } from "../store/DoneSlice";
+import Tasks from "../ui/Tasks";
 
-function CompletedTasks() {
-  const addCompletedTaskHandler = function () {
-    console.log("completed task");
+function CurrentTasks() {
+  const dispatch = useDispatch();
+  const id = nanoid(4);
+
+  const [text, setText] = useState("");
+  const { completedTodos, addcompletedCard } = useSelector(
+    (state) => state.doneTodos
+  );
+
+  const addNewDoneTodoHandler = function () {
+    if (text.trim().length !== 0) {
+      dispatch(
+        newDoneTodo({
+          todo: text,
+          id,
+          edit: false,
+        })
+      );
+    }
+    dispatch(addDoneTodo());
+    setText("");
   };
 
-  // return (
-  //   <TaskWrapper>
-  //     <h2>Done</h2>
-  //   </TaskWrapper>
-  // );
+  const editTodoCard = function (id) {
+    dispatch(editDoneTodo(id));
+    console.log(id);
+  };
+
+  return (
+    <Tasks
+      onAddHandler={addNewDoneTodoHandler}
+      addCard={addcompletedCard}
+      onAddTodo={addDoneTodo}
+      todos={completedTodos}
+      value={text}
+      onSetText={setText}
+      onEdit={editTodoCard}
+      dispatchTodo={newDoneTodo}
+      HeaderTitle="Done"
+    />
+  );
 }
 
-export default CompletedTasks;
+export default CurrentTasks;
