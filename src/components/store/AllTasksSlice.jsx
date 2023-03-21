@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 // import { updateTodos } from "./TodoSlice";
 import { nanoid } from "nanoid";
 
@@ -9,11 +9,11 @@ const initialState = {
       todos: [
         {
           todo: "Shopping",
-          id: nanoid(3),
+          id: "f1",
         },
         {
           todo: "Library",
-          id: nanoid(3),
+          id: "f2",
         },
       ],
       addCard: false,
@@ -70,9 +70,43 @@ const allTasksSlice = createSlice({
       const updatedTodo = { ...todo, edit: !todo.edit };
       state.currentTodos[findTodo] = updatedTodo;
     },
+    drapDrop: (state, action) => {
+      const { source, destination } = action.payload;
+      if (!destination) return;
+      const todos = current(state.allTodos);
+
+      const sourceColumn = { ...todos[source.droppableId] };
+      const sourceTodos = [...sourceColumn.todos];
+      if (source.droppableId !== destination.droppableId) {
+        const destColumns = { ...todos[destination.droppableId] };
+        const destTodos = [...destColumns.todos];
+        const [removed] = sourceTodos.splice(source.index, 1);
+
+        destTodos.splice(destination.index, 0, removed);
+
+        state.allTodos = {
+          ...todos,
+          [source.droppableId]: {
+            ...sourceColumn,
+            todos: sourceTodos,
+          },
+          [destination.droppableId]: {
+            ...destColumns,
+            todos: destTodos,
+          },
+        };
+      } else {
+        const [removed] = sourceTodos.splice(source.index, 1);
+        sourceTodos.splice(destination.index, 0, removed);
+        state.allTodos[source.droppableId] = {
+          ...sourceColumn,
+          todos: sourceTodos,
+        };
+      }
+    },
   },
 });
 
-export const { newTodo, addTodo, editTodo } = allTasksSlice.actions;
+export const { newTodo, addTodo, editTodo, drapDrop } = allTasksSlice.actions;
 
 export default allTasksSlice.reducer;

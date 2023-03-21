@@ -3,78 +3,33 @@ import CompletedTasks from "./done/CompletedTasks";
 import CurrentTasks from "./doing/CurrentTasks";
 import Todos from "./todo/NewTodos";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Tasks from "./ui/Tasks";
+import { drapDrop } from "./store/AllTasksSlice";
 
 import classes from "./AllTodos.module.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 function AllTodos() {
   const { allTodos } = useSelector((state) => state.allTodos);
-  console.log(allTodos);
+  const dispatch = useDispatch();
 
   return (
     <div className={classes.todos}>
-      <DragDropContext onDragEnd={(result) => console.log(result)}>
+      <DragDropContext
+        onDragEnd={(result) => {
+          const { source, destination } = result;
+          dispatch(drapDrop({ source, destination }));
+        }}
+      >
         {Object.entries(allTodos).map(([id, column], i) => {
           // console.log(id);
           return (
-            <div key={id}>
-              <h2>{column.name}</h2>
-              <div>
-                <Droppable droppableId={id}>
-                  {(provided, snapshot) => {
-                    return (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "lightblue"
-                            : "lightgrey",
-                          padding: 4,
-                          width: 250,
-                          minHeight: 500,
-                        }}
-                      >
-                        {column.todos.map((todo, index) => {
-                          // console.log(todo.id);
-                          return (
-                            <Draggable
-                              key={todo.id}
-                              index={index}
-                              draggableId={todo.id}
-                            >
-                              {(provided, snapshot) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={{
-                                      userSelect: "none",
-                                      padding: 16,
-                                      margin: "0 0 8px 0",
-                                      minHeight: "50px",
-                                      backgroundColor: snapshot.isDragging
-                                        ? "#263B4A"
-                                        : "#456C86",
-                                      color: "white",
-                                      ...provided.draggableProps.style,
-                                    }}
-                                  >
-                                    {todo.todo}
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
-              </div>
-            </div>
+            <Tasks
+              HeaderTitle={column.name}
+              todos={column.todos}
+              key={id}
+              id={id}
+            />
           );
         })}
       </DragDropContext>
@@ -83,15 +38,3 @@ function AllTodos() {
 }
 
 export default AllTodos;
-
-// function AllTodos() {
-//   return (
-//     <DragDropContext onDragEnd={(result) => console.log(result)}>
-//       <div className={classes.todos}>
-//         <Todos />
-//         <CurrentTasks />
-//         <CompletedTasks />
-//       </div>
-//     </DragDropContext>
-//   );
-// }

@@ -5,9 +5,9 @@ import { InputTextArea } from "../ui/Components";
 import { SaveButton } from "../ui/Components";
 import { useDispatch } from "react-redux";
 
-function Card({ todo, id, onEdit, edit, dispatchTodo }) {
+function Card({ todo, id, onEdit, edit, dispatchTodo, provided, snapshot }) {
   const [editedText, setEditedText] = useState(todo);
-
+  // console.log(provided, snapshot);
   const dispatch = useDispatch();
 
   const editCardHandler = function () {
@@ -22,7 +22,13 @@ function Card({ todo, id, onEdit, edit, dispatchTodo }) {
   };
 
   return (
-    <li className={classes.card}>
+    <li
+      className={classes.card}
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      style={{ ...provided.draggableProps.style }}
+    >
       {!edit && (
         <div className={classes.task}>
           <div className={classes["todo"]}>{todo}</div>
