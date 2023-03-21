@@ -2,7 +2,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { SaveButton } from "./Components";
 import classes from "./TaskWrapper.module.scss";
-// import { Droppable } from "react-beautiful-dnd";
+import { addTodo, newTodo } from "../store/AllTasksSlice";
+import { nanoid } from "nanoid";
 
 function TaskWrapper(props) {
   const dispatch = useDispatch();
@@ -11,8 +12,9 @@ function TaskWrapper(props) {
       <div>{props.children}</div>
       {!props.addCard && (
         <button
+          className={classes.addTask}
           onClick={() => {
-            dispatch(props.onAddTodo());
+            dispatch(addTodo(props.id));
           }}
         >
           <span>+</span>
@@ -22,7 +24,15 @@ function TaskWrapper(props) {
       {props.addCard && (
         <SaveButton
           onClick={() => {
-            props.onAdd();
+            dispatch(
+              newTodo({
+                todo: props.todoText,
+                id: nanoid(4),
+                columnId: props.id,
+              })
+            );
+
+            dispatch(addTodo(props.id));
           }}
         />
       )}

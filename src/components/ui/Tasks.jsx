@@ -1,24 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import TaskWrapper from "./TaskWrapper";
 import { InputTextArea } from "./Components";
 import Card from "../todo/Card";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { useSelector } from "react-redux";
 
-function Tasks({
-  // onAddHandler,
-  // addCard,
-  // onAddTodo,
-  todos,
-  // value,
-  // onSetText,
-  // onEdit,
-  // dispatchTodo,
-  HeaderTitle,
-  id,
-}) {
+function Tasks({ addCard, todos, HeaderTitle, id }) {
+  const [todoText, setTodoText] = useState("");
+
   return (
-    // <TaskWrapper onAdd={onAddHandler} addCard={addCard} onAddTodo={onAddTodo}>
-    <TaskWrapper id={id}>
+    <TaskWrapper id={id} addCard={addCard} todoText={todoText}>
       <h2>{HeaderTitle}</h2>
       <Droppable droppableId={id}>
         {(provided, snapshot) => {
@@ -28,10 +19,7 @@ function Tasks({
               {...provided.droppableProps}
               ref={provided.innerRef}
               style={{
-                background: snapshot.isDraggingOver ? "red" : "orange",
-                // padding: 4,
-                // width: 250,
-                // minHeight: 500,
+                background: snapshot.isDraggingOver ? "#f8f9fa" : "",
               }}
             >
               {todos.map((task, index) => (
@@ -39,15 +27,13 @@ function Tasks({
                   {(provided, snapshot) => {
                     return (
                       <Card
-                        // ref={provided.innerRef}
                         provided={provided}
                         snapshot={snapshot}
                         id={task.id}
+                        edit={task.edit}
+                        columnId={id}
                         todo={task.todo}
-                        // text={value}
-                        // onEdit={onEdit}
-                        // edit={task.edit}
-                        // dispatchTodo={dispatchTodo}
+                        todoText={todoText}
                       />
                     );
                   }}
@@ -59,7 +45,7 @@ function Tasks({
         }}
       </Droppable>
 
-      {/* {addCard && <InputTextArea value={value} onAddText={onSetText} />} */}
+      {addCard && <InputTextArea value={todoText} onAddText={setTodoText} />}
     </TaskWrapper>
   );
 }

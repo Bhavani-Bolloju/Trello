@@ -4,22 +4,21 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { InputTextArea } from "../ui/Components";
 import { SaveButton } from "../ui/Components";
 import { useDispatch } from "react-redux";
+import { editTodo, newTodo } from "../store/AllTasksSlice";
 
-function Card({ todo, id, onEdit, edit, dispatchTodo, provided, snapshot }) {
+function Card({ todo, id, columnId, edit, provided, snapshot }) {
   const [editedText, setEditedText] = useState(todo);
-  // console.log(provided, snapshot);
+
   const dispatch = useDispatch();
 
   const editCardHandler = function () {
     if (editedText.trim().length !== 0) {
-      dispatch(
-        dispatchTodo({
-          id,
-          todo: editedText,
-        })
-      );
+      dispatch(newTodo({ columnId, id, todo: editedText }));
+
+      dispatch(editTodo({ id, columnId }));
     }
   };
+  // console.log(editedText);
 
   return (
     <li
@@ -35,7 +34,7 @@ function Card({ todo, id, onEdit, edit, dispatchTodo, provided, snapshot }) {
           <button
             className={classes["edit-btn"]}
             onClick={() => {
-              onEdit(id);
+              dispatch(editTodo({ id, columnId }));
             }}
           >
             <AiOutlineEdit />

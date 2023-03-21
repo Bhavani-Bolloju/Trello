@@ -1,8 +1,6 @@
 import React from "react";
-import CompletedTasks from "./done/CompletedTasks";
-import CurrentTasks from "./doing/CurrentTasks";
-import Todos from "./todo/NewTodos";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+import { DragDropContext } from "react-beautiful-dnd";
 import Tasks from "./ui/Tasks";
 import { drapDrop } from "./store/AllTasksSlice";
 
@@ -22,13 +20,13 @@ function AllTodos() {
         }}
       >
         {Object.entries(allTodos).map(([id, column], i) => {
-          // console.log(id);
           return (
             <Tasks
               HeaderTitle={column.name}
               todos={column.todos}
               key={id}
               id={id}
+              addCard={column.addCard}
             />
           );
         })}

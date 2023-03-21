@@ -1,6 +1,4 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-// import { updateTodos } from "./TodoSlice";
-import { nanoid } from "nanoid";
 
 const initialState = {
   allTodos: {
@@ -10,26 +8,28 @@ const initialState = {
         {
           todo: "Shopping",
           id: "f1",
+          edit: false,
         },
         {
           todo: "Library",
           id: "f2",
+          edit: false,
         },
       ],
       addCard: false,
-      editCard: false,
+      // editCard: false,
     },
     doing: {
       name: "doing",
       todos: [],
       addCard: false,
-      editCard: false,
+      // editCard: false,
     },
     done: {
       name: "done",
       todos: [],
       addCard: false,
-      editCard: false,
+      // editCard: false,
     },
   },
 };
@@ -56,19 +56,46 @@ const allTasksSlice = createSlice({
   initialState,
   reducers: {
     newTodo: (state, action) => {
-      updateTodos(state.currentTodos, action);
+      const { columnId, id, todo } = action.payload;
+      const allTodos = current(state.allTodos);
+      const column = { ...allTodos[columnId] };
+
+      const findIndex = column.todos.findIndex((todo) => todo.id === id);
+
+      if (findIndex < 0) {
+        state.allTodos[columnId].todos.push({ id, todo, edit: false });
+      } else {
+        const findTodo = column.todos[findIndex];
+        const updatedTodo = { ...findTodo, todo };
+
+        const todos = [...column.todos];
+        todos[findIndex] = updatedTodo;
+
+        state.allTodos[columnId] = {
+          ...state.allTodos[columnId],
+          todos,
+        };
+      }
     },
 
-    addTodo: (state) => {
-      state.addCTCard = !state.addCTCard;
+    addTodo: (state, action) => {
+      const columnId = action.payload;
+      state.allTodos[columnId].addCard = !state.allTodos[columnId].addCard;
     },
 
     editTodo: (state, action) => {
-      const items = [...state.currentTodos];
-      const findTodo = items.findIndex((item) => item.id === action.payload);
-      const todo = items[findTodo];
+      const { id, columnId } = action.payload;
+      const allTodos = current(state.allTodos);
+
+      const todos = [...allTodos[columnId].todos];
+
+      const findTodo = todos.findIndex((todo) => todo.id === id);
+      const todo = todos[findTodo];
       const updatedTodo = { ...todo, edit: !todo.edit };
-      state.currentTodos[findTodo] = updatedTodo;
+
+      todos[findTodo] = updatedTodo;
+
+      state.allTodos[columnId] = { ...state.allTodos[columnId], todos };
     },
     drapDrop: (state, action) => {
       const { source, destination } = action.payload;
