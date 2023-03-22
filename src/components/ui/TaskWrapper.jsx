@@ -24,13 +24,15 @@ function TaskWrapper(props) {
       {props.addCard && (
         <SaveButton
           onClick={() => {
-            dispatch(
-              newTodo({
-                todo: props.todoText,
-                id: nanoid(4),
-                columnId: props.id,
-              })
-            );
+            if (props.todoText.trim().length !== 0) {
+              dispatch(
+                newTodo({
+                  todo: props.todoText,
+                  id: nanoid(4),
+                  columnId: props.id,
+                })
+              );
+            }
 
             dispatch(addTodo(props.id));
           }}

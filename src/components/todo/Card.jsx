@@ -14,11 +14,9 @@ function Card({ todo, id, columnId, edit, provided, snapshot }) {
   const editCardHandler = function () {
     if (editedText.trim().length !== 0) {
       dispatch(newTodo({ columnId, id, todo: editedText }));
-
-      dispatch(editTodo({ id, columnId }));
     }
+    dispatch(editTodo({ id, columnId }));
   };
-  // console.log(editedText);
 
   return (
     <li

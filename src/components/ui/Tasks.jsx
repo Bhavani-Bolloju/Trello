@@ -3,11 +3,10 @@ import TaskWrapper from "./TaskWrapper";
 import { InputTextArea } from "./Components";
 import Card from "../todo/Card";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { useSelector } from "react-redux";
 
 function Tasks({ addCard, todos, HeaderTitle, id }) {
   const [todoText, setTodoText] = useState("");
-
+  // console.log(todos);
   return (
     <TaskWrapper id={id} addCard={addCard} todoText={todoText}>
       <h2>{HeaderTitle}</h2>

@@ -10,28 +10,21 @@ const initialState = {
           id: "f1",
           edit: false,
         },
-        {
-          todo: "Library",
-          id: "f2",
-          edit: false,
-        },
       ],
       addCard: false,
-      // editCard: false,
     },
     doing: {
       name: "doing",
       todos: [],
       addCard: false,
-      // editCard: false,
     },
     done: {
       name: "done",
       todos: [],
       addCard: false,
-      // editCard: false,
     },
   },
+  changed: false,
 };
 export const updateTodos = function (items, action) {
   const todos = [...items];
@@ -55,7 +48,21 @@ const allTasksSlice = createSlice({
   name: "allTodos",
   initialState,
   reducers: {
+    addFetchData: (state, action) => {
+      const { current: curr, doing, done } = action.payload;
+      const allTodos = current(state.allTodos);
+      const currentTodos = { ...curr, todos: curr.todos || [] };
+      const doingTodos = { ...doing, todos: doing.todos || [] };
+      const doneTodos = { ...done, todos: done.todos || [] };
+
+      state.allTodos = {
+        current: { ...currentTodos },
+        doing: { ...doingTodos },
+        done: { ...doneTodos },
+      };
+    },
     newTodo: (state, action) => {
+      state.changed = true;
       const { columnId, id, todo } = action.payload;
       const allTodos = current(state.allTodos);
       const column = { ...allTodos[columnId] };
@@ -84,6 +91,7 @@ const allTasksSlice = createSlice({
     },
 
     editTodo: (state, action) => {
+      state.changed = true;
       const { id, columnId } = action.payload;
       const allTodos = current(state.allTodos);
 
@@ -98,6 +106,7 @@ const allTasksSlice = createSlice({
       state.allTodos[columnId] = { ...state.allTodos[columnId], todos };
     },
     drapDrop: (state, action) => {
+      state.changed = true;
       const { source, destination } = action.payload;
       if (!destination) return;
       const todos = current(state.allTodos);
@@ -106,6 +115,7 @@ const allTasksSlice = createSlice({
       const sourceTodos = [...sourceColumn.todos];
       if (source.droppableId !== destination.droppableId) {
         const destColumns = { ...todos[destination.droppableId] };
+        // console.log(destColumns);
         const destTodos = [...destColumns.todos];
         const [removed] = sourceTodos.splice(source.index, 1);
 
@@ -134,6 +144,7 @@ const allTasksSlice = createSlice({
   },
 });
 
-export const { newTodo, addTodo, editTodo, drapDrop } = allTasksSlice.actions;
+export const { newTodo, addTodo, editTodo, drapDrop, addFetchData } =
+  allTasksSlice.actions;
 
 export default allTasksSlice.reducer;

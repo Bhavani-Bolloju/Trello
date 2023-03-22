@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { DragDropContext } from "react-beautiful-dnd";
 import Tasks from "./ui/Tasks";
 import { drapDrop } from "./store/AllTasksSlice";
+import { sendTodos, fetchTodosData } from "./store/action-thunks";
 
 import classes from "./AllTodos.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 
+let sending = false;
 function AllTodos() {
-  const { allTodos } = useSelector((state) => state.allTodos);
+  const { allTodos, changed } = useSelector((state) => state.allTodos);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodosData());
+  }, []);
+
+  useEffect(() => {
+    if (changed) {
+      dispatch(sendTodos(allTodos));
+    }
+  }, [allTodos, changed]);
 
   return (
     <div className={classes.todos}>
@@ -23,7 +35,7 @@ function AllTodos() {
           return (
             <Tasks
               HeaderTitle={column.name}
-              todos={column.todos}
+              todos={column.todos || []}
               key={id}
               id={id}
               addCard={column.addCard}
