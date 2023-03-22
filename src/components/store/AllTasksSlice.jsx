@@ -1,30 +1,31 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, current } from '@reduxjs/toolkit';
 
 const initialState = {
   allTodos: {
     current: {
-      name: "current",
+      name: 'current',
       todos: [
         {
-          todo: "Shopping",
-          id: "f1",
+          todo: 'Shopping',
+          id: 'f1',
           edit: false,
         },
       ],
       addCard: false,
     },
     doing: {
-      name: "doing",
+      name: 'doing',
       todos: [],
       addCard: false,
     },
     done: {
-      name: "done",
+      name: 'done',
       todos: [],
       addCard: false,
     },
   },
   changed: false,
+  backDrop: false,
 };
 export const updateTodos = function (items, action) {
   const todos = [...items];
@@ -45,35 +46,59 @@ export const updateTodos = function (items, action) {
 };
 
 const allTasksSlice = createSlice({
-  name: "allTodos",
+  name: 'allTodos',
   initialState,
   reducers: {
     addFetchData: (state, action) => {
       const { current: curr, doing, done } = action.payload;
       const allTodos = current(state.allTodos);
-      const currentTodos = { ...curr, todos: curr.todos || [] };
-      const doingTodos = { ...doing, todos: doing.todos || [] };
-      const doneTodos = { ...done, todos: done.todos || [] };
+      const currentTodos = {
+        ...curr,
+        todos: curr.todos || [],
+      };
+      const doingTodos = {
+        ...doing,
+        todos: doing.todos || [],
+      };
+      const doneTodos = {
+        ...done,
+        todos: done.todos || [],
+      };
 
       state.allTodos = {
-        current: { ...currentTodos },
-        doing: { ...doingTodos },
-        done: { ...doneTodos },
+        current: {
+          ...currentTodos,
+        },
+        doing: {
+          ...doingTodos,
+        },
+        done: {
+          ...doneTodos,
+        },
       };
     },
     newTodo: (state, action) => {
       state.changed = true;
       const { columnId, id, todo } = action.payload;
       const allTodos = current(state.allTodos);
-      const column = { ...allTodos[columnId] };
+      const column = {
+        ...allTodos[columnId],
+      };
 
       const findIndex = column.todos.findIndex((todo) => todo.id === id);
 
       if (findIndex < 0) {
-        state.allTodos[columnId].todos.push({ id, todo, edit: false });
+        state.allTodos[columnId].todos.push({
+          id,
+          todo,
+          edit: false,
+        });
       } else {
         const findTodo = column.todos[findIndex];
-        const updatedTodo = { ...findTodo, todo };
+        const updatedTodo = {
+          ...findTodo,
+          todo,
+        };
 
         const todos = [...column.todos];
         todos[findIndex] = updatedTodo;
@@ -99,11 +124,18 @@ const allTasksSlice = createSlice({
 
       const findTodo = todos.findIndex((todo) => todo.id === id);
       const todo = todos[findTodo];
-      const updatedTodo = { ...todo, edit: !todo.edit };
+      const updatedTodo = {
+        ...todo,
+        edit: !todo.edit,
+      };
 
       todos[findTodo] = updatedTodo;
 
-      state.allTodos[columnId] = { ...state.allTodos[columnId], todos };
+      state.allTodos[columnId] = {
+        ...state.allTodos[columnId],
+        todos,
+      };
+      state.backDrop = !state.backDrop;
     },
     drapDrop: (state, action) => {
       state.changed = true;
@@ -111,10 +143,14 @@ const allTasksSlice = createSlice({
       if (!destination) return;
       const todos = current(state.allTodos);
 
-      const sourceColumn = { ...todos[source.droppableId] };
+      const sourceColumn = {
+        ...todos[source.droppableId],
+      };
       const sourceTodos = [...sourceColumn.todos];
       if (source.droppableId !== destination.droppableId) {
-        const destColumns = { ...todos[destination.droppableId] };
+        const destColumns = {
+          ...todos[destination.droppableId],
+        };
         // console.log(destColumns);
         const destTodos = [...destColumns.todos];
         const [removed] = sourceTodos.splice(source.index, 1);
@@ -144,7 +180,6 @@ const allTasksSlice = createSlice({
   },
 });
 
-export const { newTodo, addTodo, editTodo, drapDrop, addFetchData } =
-  allTasksSlice.actions;
+export const { newTodo, addTodo, editTodo, drapDrop, addFetchData } = allTasksSlice.actions;
 
 export default allTasksSlice.reducer;

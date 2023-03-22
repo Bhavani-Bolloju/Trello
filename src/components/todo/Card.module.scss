@@ -1,8 +1,10 @@
 .card {
   width: 100%;
+  height: fit-content;
 
   color: #5e6c84;
 
+  position: relative;
   .task {
     background-color: #fff;
     width: 100%;
@@ -18,9 +20,6 @@
 
   .todo {
     width: 100%;
-    &:hover {
-      cursor: pointer;
-    }
     &:hover + .edit-btn {
       visibility: visible;
     }
@@ -44,18 +43,34 @@
     color: #9fa9ba;
   }
 
+  .edit {
+    position: absolute;
+    top: -20%;
+    height: 70px;
+    width: 100%;
+    left: 0;
+    transform: scale(1.1);
+    z-index: 30;
+  }
+
   .edit_todo {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
 
     textarea {
+      font-size: 14px;
+      box-shadow: 0px 2px 5px 10px rgba(0, 0, 0, 0.01);
       border: none;
       width: 100%;
       border-radius: 5px;
-      box-shadow: 0px 2px 5px 10px rgba(0, 0, 0, 0.01);
       padding: 8px;
       height: 70px;
+      background-color: #f8f9fa;
       align-self: flex-start;
+      color: #5e6c84;
       &:focus {
         outline: none;
       }

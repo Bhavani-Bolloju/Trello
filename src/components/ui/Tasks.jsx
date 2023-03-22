@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import TaskWrapper from "./TaskWrapper";
-import { InputTextArea } from "./Components";
-import Card from "../todo/Card";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import React, { useState } from 'react';
+import TaskWrapper from './TaskWrapper';
+import { InputTextArea } from './Components';
+import Card from '../todo/Card';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 function Tasks({ addCard, todos, HeaderTitle, id }) {
-  const [todoText, setTodoText] = useState("");
+  const [todoText, setTodoText] = useState('');
   // console.log(todos);
   return (
     <TaskWrapper id={id} addCard={addCard} todoText={todoText}>
@@ -18,12 +18,13 @@ function Tasks({ addCard, todos, HeaderTitle, id }) {
               {...provided.droppableProps}
               ref={provided.innerRef}
               style={{
-                background: snapshot.isDraggingOver ? "#f8f9fa" : "",
+                background: snapshot.isDraggingOver ? '#f8f9fa' : '',
               }}
             >
               {todos.map((task, index) => (
                 <Draggable key={task.id} draggableId={task.id} index={index}>
                   {(provided, snapshot) => {
+                    // console.log(task.edit);
                     return (
                       <Card
                         provided={provided}

@@ -6,7 +6,11 @@
   padding: 8px;
   height: 70px;
   align-self: flex-start;
+  background-color: #f8f9fa;
+  color: #5e6c84;
   margin-top: 10px;
+  font-family: inherit;
+  font-weight: 600;
   resize: none;
   &:focus {
     outline: none;

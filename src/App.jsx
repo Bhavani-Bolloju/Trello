@@ -1,5 +1,5 @@
-import React from "react";
-import AllTodos from "./components/AllTodos";
+import React from 'react';
+import AllTodos from './components/todo/AllTodos';
 
 function App() {
   return (

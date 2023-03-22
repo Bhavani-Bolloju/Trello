@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { DragDropContext } from "react-beautiful-dnd";
-import Tasks from "./ui/Tasks";
-import { drapDrop } from "./store/AllTasksSlice";
-import { sendTodos, fetchTodosData } from "./store/action-thunks";
+import { DragDropContext } from 'react-beautiful-dnd';
+import Tasks from '../ui/Tasks';
+import { drapDrop } from '../store/AllTasksSlice';
+import { sendTodos, fetchTodosData } from '../store/action-thunks';
+import BackDrop from '../ui/BackDrop';
 
-import classes from "./AllTodos.module.scss";
-import { useSelector, useDispatch } from "react-redux";
+import classes from './AllTodos.module.scss';
+import { useSelector, useDispatch } from 'react-redux';
 
-let sending = false;
 function AllTodos() {
-  const { allTodos, changed } = useSelector((state) => state.allTodos);
+  const { allTodos, changed, backDrop } = useSelector((state) => state.allTodos);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,6 +43,7 @@ function AllTodos() {
           );
         })}
       </DragDropContext>
+      {backDrop && <BackDrop />}
     </div>
   );
 }
